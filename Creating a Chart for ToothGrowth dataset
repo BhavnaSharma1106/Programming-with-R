@@ -1,0 +1,21 @@
+
+
+
+# Install tidyverse package (if not already installed)
+if (!requireNamespace("tidyverse", quietly = TRUE)) {
+  install.packages("tidyverse")
+}
+
+# Load tidyverse package
+library(tidyverse)
+
+# Load ToothGrowth dataset
+data(ToothGrowth)
+
+# Create a boxplot to visualize tooth growth
+ggplot(ToothGrowth, aes(x = factor(dose), y = len, fill = supp)) +
+  geom_boxplot() +
+  labs(title = "Tooth Growth by Dose and Supplement",
+       x = "Dose (mg/day)",
+       y = "Tooth Length")
+
