@@ -1,0 +1,39 @@
+Importing Data in R
+
+You can use the data() function to load these datasets in R. If you run the data function without
+an argument, R will display a list of the available datasets.
+
+data()
+
+
+If you want to load a specific dataset, just enter its name in the parentheses of the data()
+function. 
+For example, let’s load the mtcars dataset, which has information about cars that have
+been featured in past issues of Motor Trend magazine.
+
+When you run the function, R will load the dataset. The dataset will also appear in the
+Environment pane of your RStudio. The Environment pane displays the names of the data
+objects, such as data frames and variables, that you have in your current workspace.
+
+The readr package
+
+In addition to using R’s built-in datasets, it is also helpful to import data from other sources to
+use for practice or analysis. The readr package in R is a great tool for reading rectangular data.
+Rectangular data is data that fits nicely inside a rectangle of rows and columns, with each
+column referring to a single variable and each row referring to a single observation.
+
+
+Here are some examples of file types that store rectangular data:
+
+● .csv (comma separated values): a .csv file is a plain text file that contains a list of data.
+They mostly use commas to separate (or delimit) data, but sometimes they use other
+characters, like semicolons.
+
+● .tsv (tab separated values): a .tsv file stores a data table in which the columns of data
+are separated by tabs. For example, a database table or spreadsheet data.
+
+● .fwf (fixed width files): a .fwf file has a specific format that allows for the saving of
+textual data in an organized fashion.
+
+● .log: a .log file is a computer-generated file that records events from operating systems
+and other software programs.
