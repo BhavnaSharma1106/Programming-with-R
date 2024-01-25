@@ -1,0 +1,92 @@
+Loading and Cleaning Divvy_Trips_2019_Q1
+
+# Install tidyverse
+install.packages("tidyverse")
+library(tidyverse)
+
+#Read the data frame Divvy_Trips_2019_Q1
+> library(readr)
+> Divvy_Trips_2019_Q1_Divvy_Trips_2019_Q1 <- read_csv("Divvy_Trips_2019_Q1 - Divvy_Trips_2019_Q1.csv")
+Rows: 365069 Columns: 12                                                                         
+── Column specification ───────────────────────────────────────────────────────────────────────────
+Delimiter: ","
+chr (6): start_time, end_time, from_station_name, to_station_name, usertype, gender
+dbl (5): trip_id, bikeid, from_station_id, to_station_id, birthyear
+num (1): tripduration
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+> View(Divvy_Trips_2019_Q1_Divvy_Trips_2019_Q1)
+
+#Install tidyr, reader and dplyr packages
+> install.packages("tidyr")
+> library(tidyr)
+> install.packages("readr")
+> library(readr)
+> install.packages("dplyr")
+> library(dplyr)
+
+
+# Create a new column trip_duration which has difference of end_time and start time in minutes
+> View(Divvy_Trips_2019_Q1_Divvy_Trips_2019_Q1)
+> Divvy_Trips_2019_Q1_Divvy_Trips_2019_Q1 $ trip_duration <- as.numeric(difftime(Divvy_Trips_2019_Q1_Divvy_Trips_2019_Q1$end_time, 
+Divvy_Trips_2019_Q1_Divvy_Trips_2019_Q1$start_time, units = "mins"))
+
+#Create and modify new column trip_duration to reflect changes in hours
+> Divvy_Trips_2019_Q1_Divvy_Trips_2019_Q1 $ trip_duration <- as.numeric(difftime(Divvy_Trips_2019_Q1_Divvy_Trips_2019_Q1$end_time, 
+Divvy_Trips_2019_Q1_Divvy_Trips_2019_Q1$start_time, units = "hours"))
+
+# Create and modify new column trip_duration to reflect changes in a new format- hh:mm:ss
+> Divvy_Trips_2019_Q1_Divvy_Trips_2019_Q1 <- Divvy_Trips_2019_Q1_Divvy_Trips_2019_Q1 %>%
++     mutate(trip_duration = format(as.POSIXct(end_time, format="%Y-%m-%d %H:%M:%S") - 
++                                       as.POSIXct(start_time, format="%Y-%m-%d %H:%M:%S"), format="%H:%M:%S"))
+
+
+#Create new column with day_of_week
+
+> Divvy_Trips_2019_Q1_Divvy_Trips_2019_Q1 <- Divvy_Trips_2019_Q1_Divvy_Trips_2019_Q1 %>%
++     mutate(day_of_week = as.numeric(format(as.Date(start_time), "%u")))
+
+# Create a table with unique station names and their frequencies in from_station_name
+> freq_from <- Divvy_Trips_2019_Q1_Divvy_Trips_2019_Q1 %>%
++     group_by(from_station_name) %>%
++     summarise(freq_from = n())
+
+
+# Create a table with unique station names and their frequencies in to_station_name
+> freq_to <- Divvy_Trips_2019_Q1_Divvy_Trips_2019_Q1 %>%
++     group_by(to_station_name) %>%
++     summarise(freq_to = n())
+
+
+# Merge the two tables based on station names
+> station_frequency <- merge(freq_from, freq_to, by.x = "from_station_name", by.y = "to_station_name", all = TRUE)
+> View(station_frequency)
+
+
+# Calculate total number of Subscribers and Customers
+> total_users <- Divvy_Trips_2019_Q1_Divvy_Trips_2019_Q1 %>%
++     group_by(usertype) %>%
++     summarise(total_users = n())
+
+
+# Calculate total number of Males and Females
+> total_gender <- Divvy_Trips_2019_Q1_Divvy_Trips_2019_Q1 %>%
++     group_by(gender) %>%
++     summarise(total_gender = n())
+
+> # Calculate total number of Male/Female Subscribers and Male/Female Customers
+> total_users_gender <- Divvy_Trips_2019_Q1_Divvy_Trips_2019_Q1 %>%
++     group_by(usertype, gender) %>%
++     summarise(total_users_gender = n())
+`summarise()` has grouped output by 'usertype'. You can override using the `.groups` argument.
+ 
+# Display the results
+>print("Total number of Subscribers and Customers:")
+> print("\nTotal number of Males and Females:")
+> print("\nTotal number of Male/Female Subscribers and Male/Female Customers:")
+
+
+#Install ggplot2 package
+> install.packages("ggplot2")
+> library (ggpplot2)
